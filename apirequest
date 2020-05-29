@@ -1,0 +1,23 @@
+import json
+import requests
+from openexchangerate import OpenExchangeRates
+
+
+res = requests.get('https://openexchangerates.org/api/latest.json?app_id=')
+client = OpenExchangeRates(api_key="")
+
+# print the status code 
+print(res.status_code)
+
+# print the list of the currencies
+try:
+    print(client.currencies())
+except:
+    print('Currencies match didn\'t execute properly')
+
+
+#print the latest conversion rate
+try:
+    print(client.latest())
+except:
+    print('Latest conversion rate match didn\'t execute properly')
