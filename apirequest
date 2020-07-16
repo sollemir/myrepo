@@ -1,13 +1,16 @@
 import json
 import requests
 from openexchangerate import OpenExchangeRates
+from datetime import datetime
+from typing import List
 
+#res = requests.get('https://openexchangerates.org/api/latest.json?app_id=9e625def40e04d64ab8b8b93a4e07012')
+client = OpenExchangeRates(api_key="9e625def40e04d64ab8b8b93a4e07012")
 
-res = requests.get('https://openexchangerates.org/api/latest.json?app_id=')
-client = OpenExchangeRates(api_key="")
 
 # print the status code 
-print(res.status_code)
+#print(res.status_code)
+
 
 # print the list of the currencies
 try:
@@ -21,3 +24,44 @@ try:
     print(client.latest())
 except:
     print('Latest conversion rate match didn\'t execute properly')
+
+#print the timestamps
+now = datetime.now()
+
+timestamp = datetime.timestamp(now)
+print('latest' + '_' + 'timestamp =', timestamp)
+
+
+with open('clients' + '_' + str(timestamp) + '.json', 'a') as daily_exchange_rates:
+    daily_exchange_rates.write(str(client.latest()))
+    json_data = json.dump(client.latest(), daily_exchange_rates) # write API response to .json file
+    print(json.loads(json.data))
+    #daily_exchange_rates.write(',') # add comma for JSON array element
+    #print(pickle.dump(daily_exchange_rates, pickle.HIGHEST_PROTOCOL))
+# with open(clients, 'a') as daily_exchange_rates:
+
+# convert dictionary as a python object
+
+class client(object):
+    def __init__(self, base: str, rates: str):
+         self.base = base
+         self.rates = rates
+
+         @classmethod
+         def from_json(cls,data):
+             return cls(**data)
+
+class Team(object):
+    def from_json(cls,data):
+        client = list(map(client.from_json,data['client']))
+        return cls(client)
+
+#Serializing
+data = json.dumps(client, default=lambda o:o.__dict__, sort_keys=True, indent=4)
+print(data)
+
+
+#Deserializing
+decoded_client = clients.from_json(json.loads(data))
+print(decoded_client)
+print(decoded_client.client)
